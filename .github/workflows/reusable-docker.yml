@@ -12,7 +12,7 @@ on:
       DOCKERHUB_USER:
         required: true
       DOCKERHUB_TOKEN:
-        required:true
+        required: true
     outputs:
       image_url:
         description: "Generate Image url"
