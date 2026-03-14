@@ -2,7 +2,7 @@ name: Main Branch Pipeline
 
 on:
   push: 
-    main
+    - main
 
 jobs:
   build-test:
