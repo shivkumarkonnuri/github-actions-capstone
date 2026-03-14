@@ -8,13 +8,27 @@ on:
     branches:
       - main
 
+permissions:
+  contents: read
+  pull-requests: write
+
 jobs:
   build_test:
     uses: ./.github/workflows/reusable-build-test.yml
     with:
       python-version: '3.12'
       run_tests: true
-  
+ 
+  dependency_scan:
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Scan dependencies for vulnerability check
+        uses: actions/dependency-review-action@v4
+        with:
+          fail-on-severity: critical
+        
   pr_comment:
     needs: build_test
     runs-on: ubuntu-latest
