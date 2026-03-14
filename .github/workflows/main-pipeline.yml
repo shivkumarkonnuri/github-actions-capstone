@@ -35,7 +35,7 @@ jobs:
     secrets: inherit
 
   deploy:
-    needs: docker-build
+    needs: [docker-build, prepare]
     runs-on: ubuntu-latest
 
     steps:
