@@ -17,7 +17,7 @@ jobs:
 
       - name: Run container
         run: |
-          docker run -d -p 8080:8080 --name health-check-container ${{ secrets.DOKERHUB_USER }}/capstone-app:latest
+          docker run -d -p 8080:80 --name health-check-container ${{ secrets.DOKERHUB_USER }}/capstone-app:latest
 
       - name: Wait for container to start
         run: |
