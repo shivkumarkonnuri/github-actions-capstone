@@ -8,11 +8,6 @@ on:
         type: string
       tags:
         type: string
-    secrets:
-      DOCKERHUB_USER:
-        required: true
-      DOCKERHUB_TOKEN:
-        required: true
     outputs:
       image_url:
         description: "Generate Image url"
@@ -32,7 +27,7 @@ jobs:
       - name: Docker Login
         uses: docker/login-action@v3
         with:
-          username: ${{ secrets.DOCKERHUB_USER }}
+          username: ${{ secrets.DOKERHUB_USER }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       
       - name: Docker Build and Push
