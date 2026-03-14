@@ -20,7 +20,9 @@ jobs:
           docker run -d -p 8080:8080 --name health-check-container ${{ secrets.DOKERHUB_USER }}/capstone-app:latest
 
       - name: Wait for container to start
-        run: sleep 5
+        run: |
+          sleep 20
+          docker ps
 
       - name: Check Health Endpoint
         id: health
