@@ -33,7 +33,9 @@ jobs:
       - name: Docker Build and Push
         run: |
           docker build -t  ${{ secrets.DOCKERHUB_USER }}/${{ inputs.image_name }}:${{ inputs.tags }} .
+          docker tag ${{ secrets.DOCKERHUB_USER }}/${{ inputs.image_name }}:latest
           docker push ${{ secrets.DOCKERHUB_USER }}/${{ inputs.image_name }}:${{ inputs.tags }}
+          docker push ${{ secrets.DOCKERHUB_USER }}/${{ inputs.image_name }}:latest
 
       - name: Build Image Url
         id: build_image 

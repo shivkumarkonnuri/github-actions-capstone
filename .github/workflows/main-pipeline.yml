@@ -1,0 +1,73 @@
+name: Main Branch Pipeline
+
+on:
+  push: [main]
+
+jobs:
+  build-test:
+    uses: ./.github/workflows/reusable-build-test.yml
+    with:
+      python-version: '3.12'
+      run_tests: true
+
+  prepare:
+    needs: build-test
+    runs-on: ubuntu-latest
+    outputs:
+      short_sha: ${{ steps.vars.outputs.short_sha }}
+
+    steps:
+
+      - name: Generate Short Commit Hash
+        id: vars
+        run: echo "short_sha=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+  
+  docker-build:
+    needs: prepare
+    uses: ./.github/workflows/reusable-docker.yml
+    with:
+      image_name: capstone-app
+      tags: sha-${{ needs.prepare.outputs.short_sha }}
+    secrets: inherit
+
+  deploy:
+    needs: docker-build
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Create a Application directory on a Server
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.EC2_SSH_HOST }}
+          username: ${{ secrets.EC2_SSH_USER }}
+          key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
+          script: |
+            echo "Deployment Started"
+            mkdir -p app
+
+      - name: Copy Docker Compose file
+        uses: appleboy/scp-action@v1
+        with:
+          host: ${{ secrets.EC2_SSH_HOST }}
+          username: ${{ secrets.EC2_SSH_USER }}
+          key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
+          source: docker-compose.yml
+          target: ~/app
+
+      - name: Deploy Code to Server
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.EC2_SSH_HOST }}
+          username: ${{ secrets.EC2_SSH_USER }}
+          key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
+          script: |
+              echo "Running App"
+              export DOCKERHUB_USER=${{ vars.DOCKERHUB_USER }}
+              export DOCKERHUB_TAG=sha-${{ needs.prepare.outputs.short_sha }}
+              echo ${{ secrets.DOCKERHUB_TOKEN }} | docker login -u ${{ vars.DOCKERHUB_USER }} --password-stdin
+              cd ~/app && docker compose down && docker compose up -d --build --force-recreate --pull always
+
