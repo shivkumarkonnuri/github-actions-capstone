@@ -1,0 +1,41 @@
+name: Docker Build and Push
+
+on:
+  workflow_call:
+    inputs:
+      image_name:
+        required: true
+        type: string
+      tags:
+        type: string
+    outputs:
+      image_url:
+        description: "Generate Image url"
+        value: ${{ jobs.build_push.outputs.image_url }}
+
+jobs:
+  build_push:
+    outputs:
+      image_url: ${{ steps.build_image.outputs.image_url }}
+    runs-on: ubuntu-latest
+    
+    steps:
+
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Docker Login
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USER }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      
+      - name: Docker Build and Push
+        run: |
+          docker build -t  ${{ secrets.DOCKERHUB_USER }}/${{ inputs.image_name }}:${{ inputs.tags }} .
+          docker push ${{ secrets.DOCKERHUB_USER }}/${{ inputs.image_name }}:${{ inputs.tags }}
+
+      - name: Build Image Url
+        id: build_image 
+        run: |
+          echo "image_url=docker.io/${{ secrets.DOCKERHUB_USER }}/${{ inputs.image_name }}:${{ inputs.tags }}" >> $GITHUB_OUTPUT

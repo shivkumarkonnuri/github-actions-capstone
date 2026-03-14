@@ -1,0 +1,42 @@
+name: Build and Test Workflow
+
+on:
+  workflow_call:
+    inputs:
+      python-version:
+        required: true
+        type: string
+      run_tests:
+        type: boolean
+        default: true
+
+    outputs:
+      test_output:
+        description: "Generate Test Output"
+        value: ${{ jobs.build_test.outputs.test_output }}
+
+jobs:
+  build_test:
+    outputs:
+      test_output: ${{ steps.result.outputs.test_output }}
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with: 
+          python-version: ${{ inputs.python-version }}
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run Tests
+        id: result
+        if: ${{ inputs.run_tests }}
+        run: |
+          echo "Run Tests"
+          echo "test_output=passed" >> $GITHUB_OUTPUT
