@@ -19,6 +19,8 @@ jobs:
       short_sha: ${{ steps.vars.outputs.short_sha }}
 
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
 
       - name: Generate Short Commit Hash
         id: vars
