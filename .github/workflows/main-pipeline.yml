@@ -46,7 +46,7 @@ jobs:
           image-ref: '${{ secrets.DOKERHUB_USER }}/capstone-app:latest'
           format: 'table'
           exit-code: 1
-          severity:'CRITICAL,HIGH'
+          severity: 'CRITICAL,HIGH'
 
   deploy:
     needs: [docker-image-scan, prepare]
