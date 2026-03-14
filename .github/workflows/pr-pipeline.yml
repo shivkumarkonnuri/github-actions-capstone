@@ -23,7 +23,7 @@ jobs:
       - name: Scan dependencies for vulnerability check
         uses: actions/dependency-review-action@v4
         with:
-          failure-on-severity: critical
+          fail-on-severity: critical
   
   pr_comment:
     needs: build_test
