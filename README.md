@@ -124,6 +124,7 @@ This project is part of a **DevOps learning journey** where the focus is on unde
 
 ### Pull Request Pipeline
 
+```
 Developer opens PR
         ↓
 GitHub PR Pipeline Triggered
@@ -135,11 +136,14 @@ Run Unit Tests
 PR Comment Job
         ↓
 PR Checks Passed
+```
 
 ---
 
 ### Main Branch Deployment Pipeline
+## Future Improvements
 
+```
 Code merged to main
         ↓
 Main Pipeline Triggered
@@ -157,11 +161,13 @@ Deploy to EC2 Server
 Docker Compose Pulls Latest Image
         ↓
 Application Running
+```
 
 ---
 
 ### Scheduled Health Check
 
+```
 GitHub Cron Trigger (Every 12 hours)
         ↓
 Pull Latest Docker Image
@@ -173,6 +179,7 @@ Health Endpoint Check (curl)
 Report Status
         ↓
 Stop Container
+```
 
 ---
 
