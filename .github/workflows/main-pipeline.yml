@@ -1,7 +1,9 @@
 name: Main Branch Pipeline
 
 on:
-  workflow_dispatch:
+  push:
+    branches:
+      - main
 
 jobs:
   build-test:
@@ -31,9 +33,23 @@ jobs:
       image_name: capstone-app
       tags: sha-${{ needs.prepare.outputs.short_sha }}
     secrets: inherit
+  
+  docker-image-scan:
+    needs: docker-build
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Scan Docker Image for Vulnerabilities
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: '${{ secrets.DOKERHUB_USER }}/capstone-app:latest'
+          format: 'table'
+          exit-code: 1
+          severity:'CRITICAL,HIGH'
 
   deploy:
-    needs: [docker-build, prepare]
+    needs: [docker-image-scan, prepare]
     runs-on: ubuntu-latest
 
     steps:
