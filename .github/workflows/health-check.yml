@@ -25,7 +25,7 @@ jobs:
       - name: Check Health Endpoint
         id: health
         run: |
-          STATUS=$(curl -s -o /dev/null -w  "%{http-code}" http://localhost:8080)
+          STATUS=$(curl -s -o /dev/null -w  "%{http_code}" http://localhost:8080)
 
           if [ $STATUS -eq 200 ]; then
             echo "Health check is PASSED"
