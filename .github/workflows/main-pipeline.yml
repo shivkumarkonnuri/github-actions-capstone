@@ -1,7 +1,8 @@
 name: Main Branch Pipeline
 
 on:
-  push: [main]
+  push: 
+    main
 
 jobs:
   build-test:
