@@ -32,6 +32,7 @@ jobs:
     with:
       image_name: capstone-app
       tags: sha-${{ needs.prepare.outputs.short_sha }}
+    secrets: inherit
 
   deploy:
     needs: [docker-build, prepare]
