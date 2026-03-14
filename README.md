@@ -105,3 +105,85 @@ This simple application can be used for practicing:
 ## Learning Purpose
 
 This project is part of a **DevOps learning journey** where the focus is on understanding how applications integrate with automation pipelines, container platforms, and deployment workflows.
+
+---
+
+## Status Badges
+
+# GitHub Actions DevOps Capstone
+
+![PR Pipeline](https://github.com/shivkumarkonnuri/github-actions-capstone/actions/workflows/pr-pipeline.yml/badge.svg)
+
+![Main Pipeline](https://github.com/shivkumarkonnuri/github-actions-capstone/actions/workflows/main-pipeline.yml/badge.svg)
+
+![Health Check](https://github.com/shivkumarkonnuri/github-actions-capstone/actions/workflows/health-check.yml/badge.svg)
+
+---
+
+## CI/CD Pipeline Architecture
+
+### Pull Request Pipeline
+
+```
+Developer opens PR
+        ↓
+GitHub PR Pipeline Triggered
+        ↓
+Reusable Build & Test Workflow
+        ↓
+Run Unit Tests
+        ↓
+PR Comment Job
+        ↓
+PR Checks Passed
+```
+
+---
+
+### Main Branch Deployment Pipeline
+## Future Improvements
+
+```
+Code merged to main
+        ↓
+Main Pipeline Triggered
+        ↓
+Build & Test
+        ↓
+Generate Short Commit SHA
+        ↓
+Build Docker Image
+        ↓
+Push Image to Docker Hub
+        ↓
+Deploy to EC2 Server
+        ↓
+Docker Compose Pulls Latest Image
+        ↓
+Application Running
+```
+
+---
+
+### Scheduled Health Check
+
+```
+GitHub Cron Trigger (Every 12 hours)
+        ↓
+Pull Latest Docker Image
+        ↓
+Run Container
+        ↓
+Health Endpoint Check (curl)
+        ↓
+Report Status
+        ↓
+Stop Container
+```
+
+---
+
+## Future Improvements
+
+(Slack, Multi-env, Rollback, Monitoring etc.)
+
