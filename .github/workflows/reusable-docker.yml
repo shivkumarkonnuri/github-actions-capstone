@@ -33,7 +33,7 @@ jobs:
       - name: Docker Build and Push
         run: |
           docker build -t  ${{ secrets.DOKERHUB_USER }}/${{ inputs.image_name }}:${{ inputs.tags }} .
-          docker tag ${{ secrets.DOKERHUB_USER }}/${{ inputs.image_name }}:latest
+          docker tag ${{ secrets.DOKERHUB_USER }}/${{ inputs.image_name }}:${{ inputs.tags }} ${{ secrets.DOKERHUB_USER }}/${{ inputs.image_name }}:latest
           docker push ${{ secrets.DOKERHUB_USER }}/${{ inputs.image_name }}:${{ inputs.tags }}
           docker push ${{ secrets.DOKERHUB_USER }}/${{ inputs.image_name }}:latest
 
